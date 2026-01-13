@@ -1,37 +1,60 @@
-// Import necessary hooks and components from react-router-dom and other libraries.
-import { Link, useParams } from "react-router-dom";  // To use link for navigation and useParams to get URL parameters
-import PropTypes from "prop-types";  // To define prop types for this component
-import rigoImageUrl from "../assets/img/rigo-baby.jpg"  // Import an image asset
-import useGlobalReducer from "../hooks/useGlobalReducer";  // Import a custom hook for accessing the global state
+import { useParams } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useNavigate } from "react-router-dom";
 
-// Define and export the Single component which displays individual item details.
-export const Single = props => {
-  // Access the global state using the custom hook.
-  const { store } = useGlobalReducer()
+export const Single = () => {
+  const { type, id } = useParams(); 
+  const navigate = useNavigate();
+  const { store, dispatch } = useGlobalReducer();
+  const idNum = Number(id);
 
-  // Retrieve the 'theId' URL parameter using useParams hook.
-  const { theId } = useParams()
-  const singleTodo = store.todos.find(todo => todo.id === parseInt(theId));
+  if (type === "character") {
+    const character = store.characters.find(c => c.id === idNum);
+    if (!character) return <h2 className="text-center mt-5">Character not found</h2>;
 
-  return (
-    <div className="container text-center">
-      {/* Display the title of the todo element dynamically retrieved from the store using theId. */}
-      <h1 className="display-4">Todo: {singleTodo?.title}</h1>
-      <hr className="my-4" />  {/* A horizontal rule for visual separation. */}
+    return (
+      <div className="container mt-4">
+        <h1 className="text-warning mb-4">{character.name}</h1>
+        <img
+          src={`https://cdn.thesimpsonsapi.com/500/character/${character.id}.webp`}
+          alt={character.name}
+          className="img-fluid mb-3"
+          style={{ maxWidth: "300px" }}
+        />
+        <p><strong>Age:</strong> {character.age}</p>
+        <p><strong>Gender:</strong> {character.gender}</p>
+        <p><strong>Status:</strong> {character.status}</p>
+        <p><strong>Occupation:</strong> {character.occupation}</p>
+        <h4 className="mt-4">Famous phrases</h4>
+        <ul>
+          {character.phrases?.slice(0, 5).map((p, i) => <li key={i}>{p}</li>)}
+        </ul>
+        <button className="btn btn-outline-secondary mb-3" onClick={() => navigate(-1)}>← Volver</button>
+      </div>
+    );
+  }
 
-      {/* A Link component acts as an anchor tag but is used for client-side routing to prevent page reloads. */}
-      <Link to="/">
-        <span className="btn btn-primary btn-lg" href="#" role="button">
-          Back home
-        </span>
-      </Link>
-    </div>
-  );
-};
+  if (type === "location") {
+    const location = store.locations.find(l => l.id === idNum);
+    if (!location) return <h2 className="text-center mt-5">Location not found</h2>;
 
-// Use PropTypes to validate the props passed to this component, ensuring reliable behavior.
-Single.propTypes = {
-  // Although 'match' prop is defined here, it is not used in the component.
-  // Consider removing or using it as needed.
-  match: PropTypes.object
+    return (
+      <div className="container mt-4">
+        <h1 className="text-warning mb-4">{location.name}</h1>
+        <img
+          src={location.image || "https://via.placeholder.com/400x200?text=No+Image"}
+          alt={location.name}
+          className="img-fluid mb-3"
+          style={{ maxWidth: "400px" }}
+        />
+        {location.use && <p><strong>Use:</strong> {location.use}</p>}
+        {location.type && <p><strong>Type:</strong> {location.type}</p>}
+        {location.region && <p><strong>Region:</strong> {location.region}</p>}
+        {location.town && <p><strong>Town:</strong> {location.town}</p>}
+        <button className="btn btn-outline-secondary mb-3" onClick={() => navigate(-1)}>← Volver</button>
+      </div>
+    );
+  }
+
+  return <h2 className="text-center mt-5">Item not found</h2>;
 };

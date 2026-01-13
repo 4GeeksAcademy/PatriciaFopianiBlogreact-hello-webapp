@@ -1,0 +1,70 @@
+:root {
+  --simpsons-yellow: #fdd835;
+  --simpsons-blue: #1976d2;
+  --simpsons-red: #d32f2f;
+  --simpsons-white: #fffde7;
+}
+
+body {
+  background-color: var(--simpsons-white);
+  font-family: 'Bangers', cursive;
+}
+
+.card {
+  min-width: 300px;
+  border: 3px solid var(--simpsons-blue);
+  background-color: var(--simpsons-yellow);
+  color: #000;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+img {
+  object-fit: cover;
+}
+
+.navbar-yellow {
+  background-color: var(--simpsons-yellow) !important;
+  border-bottom: 3px solid var(--simpsons-blue);
+}
+
+.navbar-brand {
+  font-family: 'Bangers', cursive;
+  font-size: 2rem;
+  color: #000 !important;
+}
+
+.btn-outline-primary {
+  border-color: var(--simpsons-blue);
+  color: var(--simpsons-blue);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--simpsons-blue);
+  color: white;
+}
+
+.btn-outline-warning {
+  border-color: var(--simpsons-red);
+  color: var(--simpsons-red);
+}
+
+.btn-outline-warning:hover {
+  background-color: var(--simpsons-red);
+  color: white;
+}
+
+.btn-warning {
+  background-color: var(--simpsons-red);
+  border: none;
+  color: white;
+}
+
+h1, h2 {
+  font-family: 'Bangers', cursive;
+  color: var(--simpsons-yellow);
+  text-shadow: 2px 2px var(--simpsons-blue);
+}
